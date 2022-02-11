@@ -2273,6 +2273,11 @@
         self._node.src = parent._src;
         self._node.preload = parent._preload === true ? 'auto' : parent._preload;
         self._node.volume = volume * Howler.volume();
+        
+        // in order to prevent:
+        // Failed to execute 'captureStream' on 'HTMLMediaElement': Cannot capture from element with cross-origin data
+        // needs to be set before being loaded as being set before .captureStream doesn't do the trick (is 'tainted' already)
+        self._node.crossOrigin =  'anonymous';
 
         // Begin loading the source.
         self._node.load();
